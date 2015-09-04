@@ -1,0 +1,17 @@
+{
+  "name": "oktw",
+  "version": "1.0.0",
+  "description": "irc bot",
+  "main": "index.js",
+  "dependencies": {
+    "irc": "^0.3.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "james58899",
+  "license": { "type": "MIT"
+    , "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+}
