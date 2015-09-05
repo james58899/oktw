@@ -7,7 +7,7 @@ http.get('/', function (req, res) {
 });
 
 var httpServer = http.listen(3000, function () {
-  var host = server.address().address;
+  var host = httpServer.address().address;
   var port = process.env.PORT;
 
   console.log('Example app listening at http://%s:%s', host, port);
