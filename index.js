@@ -13,7 +13,7 @@ http.get('/', function (req, res) {
 });
 
 http.listen(http.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+  console.log('Node app is running on port', http.get('port'));
 });
 
 
