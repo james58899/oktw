@@ -13,7 +13,7 @@
     "start": "node index.js"
   },
   "author": "james58899",
-  { "license" : "MIT" },
+  "license" : "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/james58899/oktw.git"
