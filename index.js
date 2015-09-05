@@ -50,6 +50,7 @@ setInterval(function(){
     }
 }, 1000);
 
+//print log to console
 client.addListener('message#', function (from, to, message) {
     console.log(from + ' => ' + to + ': ' + message);
 });
@@ -58,21 +59,20 @@ client.addListener('pm', function (from, message) {
     console.log(from + ' => ME: ' + message);
 });
 
+client.addListener('selfMessage', function (to, text) {
+    console.log('ME => ' + to + ': ' + text)
+})
+
+//autojoin
 client.addListener('invite', function(channel, from, message) {
     client.join(channel);
 });
 
+//ping and pong
 client.addListener('message#', function(from, to, message) {
     if (message === 'ping') {
         say(from, to, 'pong');
     }
-    else if (message === '.quit' && from === 'james58899') {
-        client.disconnect();
-        process.exit(0);
-    }
-    //else if (message.match(/^\..*/)) {
-    //    say(from, to, '我好像聽到熟悉的聲音？');
-    //}
 });
 
 module.exports = say;
