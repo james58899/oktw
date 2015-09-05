@@ -1,9 +1,14 @@
 var irc = require('irc');
 var express = require('express');
-var http = express();
+var sqlite3 = require('sqlite3').verbose();
+
+
+//Database init
+var db = new sqlite3.Database('./date.sqlite');
 
 
 //Web Servcie Start
+var http = express();
 http.set('port', (process.env.PORT || 5000));
 
 http.use(express.static(__dirname + '/public'));
