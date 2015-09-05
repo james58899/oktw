@@ -4,6 +4,7 @@
   "description": "irc bot",
   "main": "index.js",
   "dependencies": {
+    "express": "^4.13.3",
     "irc": "^0.3.12"
   },
   "devDependencies": {},
@@ -11,9 +12,14 @@
     "start": "node index.js"
   },
   "author": "james58899",
-  "license": { "type": "MIT"
-    , "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
+  "license": {
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/mit-license.php"
+  },
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/james58899/oktw.git"
+  },
   "engines": {
     "iojs": "3.3.0"
   }
