@@ -53,10 +53,10 @@ setInterval(function(){
 
 //print log to console
 client.addListener('message#', function (from, to, message) {
-    console.log(from + ' => ' + to + ': ' + message);
+    console.log('%s => %s: %s',from ,to ,message);
 });
 client.addListener('pm', function (from, message) {
-    console.log(from + ' => ME: ' + message);
+    console.log('%s => %s: %s',from ,client.ncik ,message);
 });
 
 //autojoin
