@@ -1,10 +1,5 @@
 var irc = require('irc');
 var express = require('express');
-var sqlite3 = require('sqlite3').verbose();
-
-
-//Database init
-var db = new sqlite3.Database('./date.sqlite');
 
 
 //Web Servcie Start
