@@ -6,7 +6,7 @@ http.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-var httpServer = app.listen(3000, function () {
+var httpServer = http.listen(3000, function () {
   var host = server.address().address;
   var port = process.env.PORT;
 
