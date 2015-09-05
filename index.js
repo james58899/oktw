@@ -2,18 +2,22 @@ var irc = require('irc');
 var express = require('express');
 var http = express();
 
+
+//Web Servcie Start
+http.set('port', (process.env.PORT || 5000));
+
+http.use(express.static(__dirname + '/public'));
+
 http.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-var httpServer = http.listen(3000, function () {
-  var host = httpServer.address().address;
-  var port = process.env.PORT;
-
-  console.log('Example app listening at http://%s:%s', host, port);
+http.listen(http.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
 
 
+//IRC Start
 var client = new irc.Client('kornbluth.freenode.net', 'oktw', {
     channels: ['#oktw', '#ysitd', '#koru1130'],
     userName: 'oktw',
