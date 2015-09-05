@@ -1,6 +1,6 @@
 var irc = require('irc');
 
-var client = new irc.Client('weber.freenode.net', 'oktw', {
+var client = new irc.Client('kornbluth.freenode.net', 'oktw', {
     channels: ['#oktw', '#ysitd', '#koru1130'],
     userName: 'oktw',
     realName: 'oktw - https://www.oktw.tw/',
