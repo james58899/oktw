@@ -51,17 +51,15 @@ setInterval(function(){
 }, 1000);
 
 //print log to console
-client.addListener('message#', function (from, to, message) {
-    console.log(from + ' => ' + to + ': ' + message);
-});
-
-client.addListener('pm', function (from, message) {
-    console.log(from + ' => ME: ' + message);
-});
-
 client.addListener('selfMessage', function (to, text) {
     console.log('ME => ' + to + ': ' + text)
 })
+client.addListener('message#', function (from, to, message) {
+    console.log(from + ' => ' + to + ': ' + message);
+});
+client.addListener('pm', function (from, message) {
+    console.log(from + ' => ME: ' + message);
+});
 
 //autojoin
 client.addListener('invite', function(channel, from, message) {
