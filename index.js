@@ -38,6 +38,7 @@ function say (from, target, message) {
     if (delayA >0) {
         if (delayB > 0) {
             client.say(target, message);
+            console.log('ME => ' + target + ': ' + message);
             delayB--;
         }
     }
@@ -51,9 +52,6 @@ setInterval(function(){
 }, 1000);
 
 //print log to console
-client.addListener('selfMessage', function (to, text) {
-    console.log('ME => ' + to + ': ' + text)
-})
 client.addListener('message#', function (from, to, message) {
     console.log(from + ' => ' + to + ': ' + message);
 });
