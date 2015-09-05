@@ -13,5 +13,8 @@
   "author": "james58899",
   "license": { "type": "MIT"
     , "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
+    },
+  "engines": {
+    "iojs": "3.3.0"
+  }
 }
