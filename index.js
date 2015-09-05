@@ -13,7 +13,7 @@ http.set('port', (process.env.PORT || 5000));
 
 http.use(express.static(__dirname + '/public'));
 
-http.get('/', function (req, res) {
+http.get('/*', function (req, res) {
   res.send('Hello World!');
 });
 
