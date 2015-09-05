@@ -38,7 +38,7 @@ function say (from, target, message) {
     if (delayA >0) {
         if (delayB > 0) {
             client.say(target, message);
-            console.log('ME => ' + target + ': ' + message);
+            console.log('%s => %s: %s', client.nick, target, message);
             delayB--;
         }
     }
