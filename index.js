@@ -8,9 +8,7 @@ http.set('port', (process.env.PORT || 5000));
 http.get('*', function (req, res) {
   res.send('Hello World!');
 });
-http.listen(http.get('port'), function() {
-  console.log('Web Service Start!', http.get('port'));
-});
+http.listen(http.get('port'));
 //IRC Start
 var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
     channels: ['#oktw', '#ysitd', '#koru1130'],
@@ -19,7 +17,6 @@ var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
     port: 7000,
     secure: true,
 });
-console.log('Bot Starting...')
 
 var delayA = 3;
 var delayB = 5;
