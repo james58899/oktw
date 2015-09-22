@@ -70,4 +70,8 @@ oktw.addListener('invite', function(channel, from, message) {
     oktw.join(channel);
 });
 
+oktw.addListener('registered', function() {
+    console.log('Bot connected!');
+});
+
 exports.say = say;
