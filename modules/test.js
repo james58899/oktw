@@ -1,5 +1,5 @@
-function test() {
-    console.log('test module is load and run!');
-};
+module.exports = function (from, to, args) {
+    say(from, to, 'Hello World!');
+}
 
-exports.test = test;
+module.exports.init = {name:'test', help:'A Test Command!'}

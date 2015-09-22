@@ -1,24 +1,18 @@
 var irc = require('irc');
 var express = require('express');
-
+var moduleManager = require('./moduleManager');
 
 //Web Servcie Start
 var http = express();
 http.set('port', (process.env.PORT || 5000));
 
-http.use(express.static(__dirname + '/public'));
-
 http.get('*', function (req, res) {
   res.send('Hello World!');
 });
 
-http.listen(http.get('port'), function() {
-  console.log('Node app is running on port', http.get('port'));
-});
-
 
 //IRC Start
-var client = new irc.Client('kornbluth.freenode.net', 'oktw', {
+var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
     channels: ['#oktw', '#ysitd', '#koru1130'],
     userName: 'oktw',
     realName: 'oktw - https://www.oktw.tw/',
@@ -29,7 +23,7 @@ var delayA = 3;
 var delayB = 5;
 var delayC;
 
-function say (from, target, message) {
+say = function (from, target, message) {
     if (delayC === from) {
         delayA--;
     }else{
@@ -37,8 +31,8 @@ function say (from, target, message) {
     }
     if (delayA >0) {
         if (delayB > 0) {
-            client.say(target, message);
-            console.log('%s => %s: %s', client.nick, target, message);
+            oktw.say(target, message);
+            console.log('%s => %s: %s', oktw.nick, target, message);
             delayB--;
         }
     }
@@ -51,24 +45,33 @@ setInterval(function(){
     }
 }, 1000);
 
-//print log to console
-client.addListener('message#', function (from, to, message) {
+
+//InitModule
+moduleManager.InitModules();
+
+//print log to console and ping
+oktw.addListener('message#', function (from, to, message) {
     console.log('%s => %s: %s',from ,to ,message);
+    if (message === 'ping') {
+        say(from, to, 'pong');
+    }else if(message === '.help') {
+        say(from, to, '可用指令：' + moduleManager.commands.toString());
+    }else if (message.match(/\.[a-z]/i)) {
+        args = message.replace('.', '').split(' ');
+        moduleManager.commands.forEach(function(cmd) {
+            if (cmd === args[0]) {
+                moduleManager.modules[cmd](from, to, args);
+            }
+        })
+    }
 });
-client.addListener('pm', function (from, message) {
-    console.log('%s => %s: %s',from ,client.ncik ,message);
+oktw.addListener('pm', function (from, message) {
+    console.log('%s => %s: %s',from ,oktw.ncik ,message);
 });
 
 //autojoin
-client.addListener('invite', function(channel, from, message) {
-    client.join(channel);
+oktw.addListener('invite', function(channel, from, message) {
+    oktw.join(channel);
 });
 
-//ping and pong
-client.addListener('message#', function(from, to, message) {
-    if (message === 'ping') {
-        say(from, to, 'pong');
-    }
-});
-
-module.exports = say;
+exports.say = say;
