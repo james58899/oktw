@@ -3,6 +3,7 @@ var commands = [];
 var modules = [];
 
 function InitModules() {
+    console.log('Loading modules...')
     fs.readdir('modules', function(err, files) {
         for(var i = 0; i < files.length; i++) {
             Loader(files[i]);
