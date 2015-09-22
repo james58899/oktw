@@ -5,11 +5,10 @@ var moduleManager = require('./moduleManager');
 //Web Servcie Start
 var http = express();
 http.set('port', (process.env.PORT || 5000));
-
 http.get('*', function (req, res) {
   res.send('Hello World!');
 });
-
+http.listen(http.get('port'));
 
 //IRC Start
 var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
@@ -19,10 +18,10 @@ var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
     port: 7000,
     secure: true,
 });
+
 var delayA = 3;
 var delayB = 5;
 var delayC;
-
 say = function (from, target, message) {
     if (delayC === from) {
         delayA--;
@@ -38,13 +37,11 @@ say = function (from, target, message) {
     }
     delayC = from;
 }
-
 setInterval(function(){
     if (delayB < 5) {
         delayB++;
     }
 }, 1000);
-
 
 //InitModule
 moduleManager.InitModules();
