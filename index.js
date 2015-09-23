@@ -52,13 +52,15 @@ oktw.addListener('message#', function (from, to, message) {
         say(from, to, 'pong');
     }else if(message === '.help') {
         say(from, to, '可用指令：' + moduleManager.commands.toString());
-    }else if (message.match(/\.[a-z]/i)) {
+    }else if (message.match(/^\.[a-z]/i)) {
         args = message.replace('.', '').split(' ');
         moduleManager.commands.forEach(function(cmd) {
             if (cmd === args[0]) {
                 moduleManager.modules[cmd](from, to, args);
             }
         })
+    }else if (message.match(/https?:\/\/\S*/i)) {
+        moduleManager.modules['title'](from, to, message.match(/https?:\/\/\S*/i));
     }
 });
 oktw.addListener('pm', function (from, message) {
@@ -71,7 +73,7 @@ oktw.addListener('invite', function(channel, from, message) {
 });
 
 oktw.addListener('registered', function() {
-    console.log('Bot connected!');
+    console.log('Bot connected!\n');
 });
 
 exports.say = say;
