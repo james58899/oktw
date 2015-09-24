@@ -70,28 +70,42 @@ oktw.prototype.say = function (from, target, message) {
     delayC = from;
 };
 
+oktw.prototype.checkIgnore = function(nick) {
+    var result = true;
+    if (this.ignore !== undefined) {
+        this.ignore.forEach(function(ignore) {
+            if (nick.match(new RegExp(ignore, 'gi'))) {
+                result = false;
+            }
+        })
+    }
+    return result
+}
+
 //Command match
 oktw.prototype.listener = function() {
     var self = this;
 
     this.irc.addListener('message#', function (from, to, message) {
         console.log('%s => %s: %s',from ,to ,message);
-        if (message === 'ping') {
-            self.say(from, to, 'pong');
-        }else if(message === '.help') {
-            self.say(from, to, '可用指令：' + moduleManager.commands.toString());
-        }else if (message.match(/^\.[a-z]/i)) {
-            args = message.replace(/^\./, '').split(' ');
-            for(var mod in moduleManager.modules) {
-                if (args[0].toLowerCase() === moduleManager.modules[mod].info['command']) {
-                    moduleManager.modules[mod](from, to, args, function(from, to, message) {self.say(from, to, message);});
+        if (self.checkIgnore(from)) {
+            if (message === 'ping') {
+                self.say(from, to, 'pong');
+            }else if(message === '.help') {
+                self.say(from, to, '可用指令：' + moduleManager.commands.toString());
+            }else if (message.match(/^\.[a-z]/i)) {
+                args = message.replace(/^\./, '').split(' ');
+                for(var mod in moduleManager.modules) {
+                    if (args[0].toLowerCase() === moduleManager.modules[mod].info['command']) {
+                        moduleManager.modules[mod](from, to, args, function(from, to, message) {self.say(from, to, message);});
+                    }
                 }
-            }
-        }else{
-            for(var mod in moduleManager.modules) {
-                var i = moduleManager.modules[mod];
-                if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
-                    moduleManager.modules[mod](from, to, message.match(i.info['rawcommand']), function(from, to, message) {self.say(from, to, message);})
+            }else{
+                for(var mod in moduleManager.modules) {
+                    var i = moduleManager.modules[mod];
+                    if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
+                        moduleManager.modules[mod](from, to, message.match(i.info['rawcommand']), function(from, to, message) {self.say(from, to, message);})
+                    }
                 }
             }
         }
