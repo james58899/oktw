@@ -1,6 +1,6 @@
 var request = require('request');
 
-module.exports = function (url) {
+module.exports = function (from, to, url, callback) {
     if (url.length === 1) {
         url = url[0];
     }else{
@@ -9,9 +9,9 @@ module.exports = function (url) {
     request(url,{timeout: 1500}, function(error, response, body) {
         if (!error && response.statusCode == 200 && body.match(/<title>.*<\/title>/i)) {
             var title = body.match(/<title>.*<\/title>/i).toString().replace(/<\/?title>/ig, '');
-            return '[Title] ' + title;
+            callback(from, to, '[Title] ' + title);
         }
     })
 };
 
-module.exports.info = {name:'title', help:'Analysis url title', command:'title', rawcommand:'/https?:\/\/\S*/i'};
+module.exports.info = {name:'title', help:'Analysis url title', command:'title', rawcommand:/https?:\/\/\S*/i};

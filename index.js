@@ -84,15 +84,14 @@ oktw.prototype.listener = function() {
             args = message.replace(/^\./, '').split(' ');
             for(var mod in moduleManager.modules) {
                 if (args[0].toLowerCase() === moduleManager.modules[mod].info['command']) {
-                    self.say(from, to, moduleManager.modules[mod](args));
+                    moduleManager.modules[mod](from, to, args, function(from, to, message) {self.say(from, to, message);});
                 }
             }
         }else{
             for(var mod in moduleManager.modules) {
                 var i = moduleManager.modules[mod];
-                if (i.info['rawCommand'] !== undefined && message.match(i.info['rawCommand'])) {
-                    console.log('Bug!');
-                    self.say(from, to, i(message.match(i.info['rawCommand']).toString()));
+                if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
+                    moduleManager.modules[mod](from, to, message.match(i.info['rawcommand']), function(from, to, message) {self.say(from, to, message);})
                 }
             }
         }
