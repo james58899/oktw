@@ -1,6 +1,6 @@
 {
   "name": "oktw",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "irc bot",
   "main": "index.js",
   "dependencies": {

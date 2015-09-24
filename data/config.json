@@ -1,0 +1,13 @@
+{
+    "nickname": "oktw",
+    "host": "kornbluth.freenode.net",
+    "channels": [
+        "#oktw",
+        "#ysitd",
+        "#koru1130"
+    ],
+    "port": 7000,
+    "secure": true,
+    "username": "oktw",
+    "realname": "oktw - https://www.oktw.tw/"
+}

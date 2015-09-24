@@ -13,11 +13,18 @@ function InitModules() {
 
 function Loader(filename) {
     mod = require('./modules/' + filename);
-    modules[mod.init['name']] = mod;
-    commands.push(mod.init['name']);
-    console.log('Loaded %s !', mod.init['name']);
+    modules[mod.info['name']] = mod;
+    commands.push(mod.info['command']);
+    console.log('Loaded module %s(%s) !', mod.info['name'], filename);
+}
+
+function Unload() {
+    modules = [];
+    commands = [];
+    console.log('All Unloaded!');
 }
 
 exports.InitModules = InitModules;
-exports.modules = modules;
+exports.Unload = Unload;
 exports.commands = commands;
+exports.modules = modules;

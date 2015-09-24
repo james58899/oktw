@@ -1,5 +1,7 @@
-var irc = require('irc');
 var express = require('express');
+var irc = require('irc');
+var fs = require('fs');
+
 var moduleManager = require('./moduleManager');
 
 //Web Servcie Start
@@ -9,19 +11,50 @@ http.get('*', function (req, res) {
   res.send('Hello World!');
 });
 http.listen(http.get('port'));
-//IRC Start
-var oktw = new irc.Client('kornbluth.freenode.net', 'oktw', {
-    channels: ['#oktw', '#ysitd', '#koru1130'],
-    userName: 'oktw',
-    realName: 'oktw - https://www.oktw.tw/',
-    port: 7000,
-    secure: true,
-});
+
+//Start
+var oktw = function() {
+    console.log('Loading bot...');
+    this.irc;
+    this.say;
+    this.config = {};
+    this.admin = [];
+    this.cache = [];
+    this.ignore = [];
+
+    moduleManager.InitModules();
+    this.loadConfig();
+    this.start();
+};
+
+oktw.prototype.loadConfig = function() {
+    this.config = JSON.parse(fs.readFileSync('./data/config.json', 'utf8'));
+    this.admin = JSON.parse(fs.readFileSync('./data/admin.json', 'utf8'));
+    this.ignore = JSON.parse(fs.readFileSync('./data/ignore.json', 'utf8'));
+    console.log('Loaded Config!');
+};
+
+oktw.prototype.start = function() {
+    this.irc = new irc.Client(this.config.host, this.config.nickname, {
+        channels: this.config.channels,
+        userName: this.config.username,
+        realName: this.config.realname,
+        port: this.config.port,
+        secure: this.config.secure,
+    })
+    console.log('Connecting to IRC...')
+    this.listener();
+};
 
 var delayA = 3;
 var delayB = 5;
 var delayC;
-say = function (from, target, message) {
+setInterval(function(){
+    if (delayB < 5) {
+        delayB++;
+    }
+}, 1000);
+oktw.prototype.say = function (from, target, message) {
     if (delayC === from) {
         delayA--;
     }else{
@@ -29,51 +62,54 @@ say = function (from, target, message) {
     }
     if (delayA >0) {
         if (delayB > 0) {
-            oktw.say(target, message);
-            console.log('%s => %s: %s', oktw.nick, target, message);
+            this.irc.say(target, message);
+            console.log('%s => %s: %s', this.irc.nick, target, message);
             delayB--;
         }
     }
     delayC = from;
-}
-setInterval(function(){
-    if (delayB < 5) {
-        delayB++;
-    }
-}, 1000);
+};
 
-//InitModule
-moduleManager.InitModules();
+//Command match
+oktw.prototype.listener = function() {
+    var self = this;
 
-//print log to console and ping
-oktw.addListener('message#', function (from, to, message) {
-    console.log('%s => %s: %s',from ,to ,message);
-    if (message === 'ping') {
-        say(from, to, 'pong');
-    }else if(message === '.help') {
-        say(from, to, '可用指令：' + moduleManager.commands.toString());
-    }else if (message.match(/^\.[a-z]/i)) {
-        args = message.replace('.', '').split(' ');
-        moduleManager.commands.forEach(function(cmd) {
-            if (cmd === args[0]) {
-                moduleManager.modules[cmd](from, to, args);
+    this.irc.addListener('message#', function (from, to, message) {
+        console.log('%s => %s: %s',from ,to ,message);
+        if (message === 'ping') {
+            self.say(from, to, 'pong');
+        }else if(message === '.help') {
+            self.say(from, to, '可用指令：' + moduleManager.commands.toString());
+        }else if (message.match(/^\.[a-z]/i)) {
+            args = message.replace(/^\./, '').split(' ');
+            for(var mod in moduleManager.modules) {
+                if (args[0].toLowerCase() === moduleManager.modules[mod].info['command']) {
+                    self.say(from, to, moduleManager.modules[mod](args));
+                }
             }
-        })
-    }else if (message.match(/https?:\/\/\S*/i)) {
-        moduleManager.modules['title'](from, to, message.match(/https?:\/\/\S*/i));
-    }
-});
-oktw.addListener('pm', function (from, message) {
-    console.log('%s => %s: %s',from ,oktw.ncik ,message);
-});
+        }else{
+            for(var mod in moduleManager.modules) {
+                var i = moduleManager.modules[mod];
+                if (i.info['rawCommand'] !== undefined && message.match(i.info['rawCommand'])) {
+                    console.log('Bug!');
+                    self.say(from, to, i(message.match(i.info['rawCommand']).toString()));
+                }
+            }
+        }
+    });
+    this.irc.addListener('pm', function (from, message) {
+        console.log('%s => %s: %s',from ,oktw.ncik ,message);
+    });
 
-//autojoin
-oktw.addListener('invite', function(channel, from, message) {
-    oktw.join(channel);
-});
+    //autojoin
+    this.irc.addListener('invite', function(channel, from, message) {
+        this.irc.join(channel);
+        console.log('Bot was invited to join %s', channel);
+    });
 
-oktw.addListener('registered', function() {
-    console.log('Bot connected!\n');
-});
+    this.irc.addListener('registered', function() {
+        console.log('Bot connected!\n');
+    });
+}
 
-exports.say = say;
+new oktw();
