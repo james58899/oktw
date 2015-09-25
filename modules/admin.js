@@ -15,8 +15,8 @@ module.exports = function (from, to, args) {
                 }
                 break;
             case 'deop':
-                oktw.admin.indexOf(args[2]) > -1 && oktw.admins.splice(oktw.admin.indexOf(args[2]), 1);
-                oktw.say(from, to, 'User ' + args[2] + ' is no longer an operator.');
+                oktw.admin.indexOf(args[2]) > -1 && oktw.admin.splice(oktw.admin.indexOf(args[2]), 1);
+                oktw.say(from, to, 'Deopped ' + args[2]);
                 break;
             case 'ban':
                 oktw.ignore.push(args[2]);
