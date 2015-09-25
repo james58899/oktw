@@ -1,6 +1,6 @@
 module.exports = function (from, to, args) {
     if (args.length > 1) {
-        oktw.say(from, to, args.join(' ').replace('say', '').replace());
+        oktw.say(from, to, args.join(' ').replace('say ', '').replace());
     }
 };
 
