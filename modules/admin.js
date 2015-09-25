@@ -8,15 +8,15 @@ module.exports = function (from, to, args) {
             case 'op':
                 if(oktw.admin.indexOf(args[2]) < 0){
                     oktw.admin.push(args[2]);
-                        oktw.say(target, 'Successfully!');
+                        oktw.say(from, to, 'Successfully!');
                 }
                 else {
-                    oktw.say(target, 'User ' + args[2] + ' is already an operator.');
+                    oktw.say(from, to, 'User ' + args[2] + ' is already an operator.');
                 }
                 break;
             case 'deop':
                 oktw.admin.indexOf(args[2]) > -1 && oktw.admins.splice(oktw.admin.indexOf(args[2]), 1);
-                oktw.say(from, target, 'User ' + args[2] + ' is no longer an operator.');
+                oktw.say(from, to, 'User ' + args[2] + ' is no longer an operator.');
                 break;
             case 'ban':
                 oktw.ignore.push(args[2]);
