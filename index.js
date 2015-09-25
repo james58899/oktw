@@ -69,6 +69,17 @@ oktw.prototype.say = function (from, target, message) {
     delayC = from;
 };
 
+oktw.prototype.checkAdmin = function(nick, callback) {
+    var self = this;
+    this.irc.whois(nick, function(data) {
+        if (typeof data.account !== "undefined" && self.admin.indexOf(data.account) > -1) {
+            callback(true);
+        }else{
+            callback(false);
+        }
+    })
+};
+
 oktw.prototype.checkIgnore = function(nick) {
     var result = true;
     if (this.ignore !== undefined) {
@@ -78,7 +89,7 @@ oktw.prototype.checkIgnore = function(nick) {
             }
         })
     }
-    return result
+    return result;
 };
 
 //Command match
@@ -118,7 +129,7 @@ oktw.prototype.listener = function() {
 
     //autojoin
     this.irc.addListener('invite', function(channel, from, message) {
-        this.irc.join(channel);
+        self.irc.join(channel);
         console.log('Bot was invited to join %s', channel);
     });
 
