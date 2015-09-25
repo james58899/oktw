@@ -50,6 +50,12 @@ oktw.prototype.reload = function() {
     this.mm.InitModules();
 };
 
+oktw.prototype.stop = function() {
+    this.mm.Unload();
+    this.irc.disconnect('Bot Stoping!');
+    process.exit()
+}
+
 var delayA = 3;
 var delayB = 5;
 var delayC;

@@ -32,6 +32,9 @@ module.exports = function (from, to, args) {
                 oktw.reload();
                 oktw.say(from, to, 'Bot reloaded!');
                 break;
+            case 'stop':
+                oktw.say(from, to, 'Stopping!');
+                oktw.stop();
         }
     })
 };
