@@ -28,6 +28,9 @@ module.exports = function (from, to, args) {
                 }
                 oktw.say(from, to, 'Unbanned ' + args[2]);
                 break;
+            case 'reload':
+                oktw.reload();
+                break;
         }
     })
 };

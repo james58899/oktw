@@ -45,6 +45,11 @@ oktw.prototype.start = function() {
     this.listener();
 };
 
+oktw.prototype.reload = function() {
+    this.mm.Unload();
+    this.mm.InitModules();
+};
+
 var delayA = 3;
 var delayB = 5;
 var delayC;
