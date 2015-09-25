@@ -30,7 +30,7 @@ module.exports = function (from, to, args) {
                 break;
             case 'reload':
                 oktw.reload();
-                oktw.say(from, to, 'Bot reloaded!'
+                oktw.say(from, to, 'Bot reloaded!');
                 break;
         }
     })
