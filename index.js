@@ -2,8 +2,6 @@ var express = require('express');
 var irc = require('irc');
 var fs = require('fs');
 
-var moduleManager = require('./moduleManager');
-
 //Web Servcie Start
 var http = express();
 http.set('port', (process.env.PORT || 5000));
@@ -19,13 +17,14 @@ var oktw = function() {
     this.say;
     this.config = {};
     this.admin = [];
-    this.cache = [];
     this.ignore = [];
 
-    moduleManager.InitModules();
+    this.mm.InitModules();
     this.loadConfig();
     this.start();
 };
+
+oktw.prototype.mm = require('./moduleManager');
 
 oktw.prototype.loadConfig = function() {
     this.config = JSON.parse(fs.readFileSync('./data/config.json', 'utf8'));
@@ -80,7 +79,7 @@ oktw.prototype.checkIgnore = function(nick) {
         })
     }
     return result
-}
+};
 
 //Command match
 oktw.prototype.listener = function() {
@@ -92,19 +91,22 @@ oktw.prototype.listener = function() {
             if (message === 'ping') {
                 self.say(from, to, 'pong');
             }else if(message === '.help') {
-                self.say(from, to, '可用指令：' + moduleManager.commands.toString());
+                self.say(from, to, '可用指令：' + self.mm.commands.toString());
             }else if (message.match(/^\.[a-z]/i)) {
                 args = message.replace(/^\./, '').split(' ');
-                for(var mod in moduleManager.modules) {
-                    if (args[0].toLowerCase() === moduleManager.modules[mod].info['command']) {
-                        moduleManager.modules[mod](from, to, args, function(from, to, message) {self.say(from, to, message);});
+                for(var mod in self.mm.modules) {
+                    var i = self.mm.modules[mod];
+                    if (args[0].toLowerCase() === i.info['command']) {
+                        i(from, to, args);
+                        break;
                     }
                 }
             }else{
-                for(var mod in moduleManager.modules) {
-                    var i = moduleManager.modules[mod];
+                for(var mod in self.mm.modules) {
+                    var i = self.mm.modules[mod];
                     if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
-                        moduleManager.modules[mod](from, to, message.match(i.info['rawcommand']), function(from, to, message) {self.say(from, to, message);})
+                        i(from, to, message.match(i.info['rawcommand']))
+                        break;
                     }
                 }
             }
@@ -125,4 +127,4 @@ oktw.prototype.listener = function() {
     });
 }
 
-new oktw();
+global.oktw = new oktw();
