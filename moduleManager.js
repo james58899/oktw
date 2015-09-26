@@ -3,16 +3,17 @@ var commands = [];
 var modules = [];
 
 function InitModules() {
-    console.log('Loading modules...')
+    console.log('Loading modules...');
     fs.readdir('modules', function(err, files) {
+        if (err) throw err;
         for(var i = 0; i < files.length; i++) {
             Loader(files[i]);
             }
-    })
+    });
 }
 
 function Loader(filename) {
-    mod = require('./modules/' + filename);
+    var mod = require('./modules/' + filename);
     modules[mod.info['name']] = mod;
     commands.push(mod.info['command']);
     console.log('Loaded module %s(%s) !', mod.info['name'], filename);

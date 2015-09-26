@@ -1,4 +1,5 @@
 module.exports = function (from, to, args) {
+    /*global oktw*/
     oktw.checkAdmin(from, function(admin) {
         if (!admin) {
             oktw.say(from, to, 'Admin only!');
@@ -36,7 +37,7 @@ module.exports = function (from, to, args) {
                 oktw.say(from, to, 'Stopping!');
                 oktw.stop();
         }
-    })
+    });
 };
 
 module.exports.info = {name:'admin', help:'Admin Command!', command:'admin'};

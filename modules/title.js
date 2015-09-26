@@ -9,6 +9,7 @@ module.exports = function (from, to, url) {
     request(url,{timeout: 1500}, function(error, response, body) {
         if (!error && response.statusCode == 200 && body.match(/<title>.*<\/title>/i)) {
             var title = body.match(/<title>.*<\/title>/i).toString().replace(/<\/?title>/ig, '');
+            /*global oktw*/
             oktw.say(from, to, '[Title] ' + title);
         }
     })

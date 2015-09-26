@@ -40,8 +40,8 @@ oktw.prototype.start = function() {
         realName: this.config.realname,
         port: this.config.port,
         secure: this.config.secure,
-    })
-    console.log('Connecting to IRC...')
+    });
+    console.log('Connecting to IRC...');
     this.listener();
 };
 
@@ -53,8 +53,8 @@ oktw.prototype.reload = function() {
 oktw.prototype.stop = function() {
     this.mm.Unload();
     this.irc.disconnect('Bot Stoping!');
-    process.exit()
-}
+    process.exit();
+};
 
 var delayA = 3;
 var delayB = 5;
@@ -88,7 +88,7 @@ oktw.prototype.checkAdmin = function(nick, callback) {
         }else{
             callback(false);
         }
-    })
+    });
 };
 
 oktw.prototype.checkIgnore = function(nick) {
@@ -98,7 +98,7 @@ oktw.prototype.checkIgnore = function(nick) {
             if (nick.match(new RegExp(ignore, 'gi'))) {
                 result = false;
             }
-        })
+        });
     }
     return result;
 };
@@ -115,7 +115,7 @@ oktw.prototype.listener = function() {
             }else if(message === '.help') {
                 self.say(from, to, '可用指令：' + self.mm.commands.toString());
             }else if (message.match(/^\.[a-z]/i)) {
-                args = message.replace(/^\./, '').split(' ');
+                var args = message.replace(/^\./, '').split(' ');
                 for(var mod in self.mm.modules) {
                     var i = self.mm.modules[mod];
                     if (args[0].toLowerCase() === i.info['command']) {
@@ -127,7 +127,7 @@ oktw.prototype.listener = function() {
                 for(var mod in self.mm.modules) {
                     var i = self.mm.modules[mod];
                     if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
-                        i(from, to, message.match(i.info['rawcommand']))
+                        i(from, to, message.match(i.info['rawcommand']));
                         break;
                     }
                 }
@@ -147,6 +147,6 @@ oktw.prototype.listener = function() {
     this.irc.addListener('registered', function() {
         console.log('Bot connected!\n');
     });
-}
+};
 
 global.oktw = new oktw();
