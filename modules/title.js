@@ -1,5 +1,5 @@
 var request = require('request');
-var cheerio = require('cheerio')
+var cheerio = require('cheerio');
 
 module.exports = function (from, to, url) {
     if (url.length === 1) {
