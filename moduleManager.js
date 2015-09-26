@@ -25,7 +25,7 @@ function Unload() {
     fs.readdir('modules', function(err, files) {
         if (err) throw err;
         for(var i = 0; i < files.length; i++) {
-            delete require.cache[require.resolve('.modules' + files)];
+            delete require.cache[require.resolve('.modules/' + files[i])];
         }
     });
     console.log('All Unloaded!');
