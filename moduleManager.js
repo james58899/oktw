@@ -22,6 +22,12 @@ function Loader(filename) {
 function Unload() {
     modules = [];
     commands = [];
+    fs.readdir('modules', function(err, files) {
+        if (err) throw err;
+        for(var i = 0; i < files.length; i++) {
+            delete require.cache[require.resolve('.modules' + files)];
+        }
+    });
     console.log('All Unloaded!');
 }
 

@@ -12,7 +12,7 @@ module.exports = function (from, to, url) {
             /*global oktw*/
             oktw.say(from, to, '[Title] ' + title);
         }
-    })
+    });
 };
 
-module.exports.info = {name:'title', help:'Analysis url title', command:'title', rawcommand:/https?:\/\/\S*/i};
+module.exports.info = {name:'title', example:'.title https://www.google.com/', command:'title', rawcommand:/https?:\/\/\S*/i};

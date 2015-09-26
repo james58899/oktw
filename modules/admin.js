@@ -40,4 +40,4 @@ module.exports = function (from, to, args) {
     });
 };
 
-module.exports.info = {name:'admin', help:'Admin Command!', command:'admin'};
+module.exports.info = {name:'admin', example:'.admin op/deop/ban/unban/reload/stop', command:'admin'};
