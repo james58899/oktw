@@ -21,7 +21,7 @@
     "url": "https://github.com/james58899/oktw.git"
   },
   "engines": {
-    "iojs": "4.1.1",
+    "node": "4.1.1",
     "npm": "2.14.4"
   }
 }
