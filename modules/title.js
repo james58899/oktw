@@ -19,7 +19,7 @@ module.exports = function (from, to, url) {
         if (!error && response.statusCode == 200) {
             $ = cheerio.load(body);
             var title =$('title').text();
-            if (title !== undefined) {
+            if (title != '') {
                 /*global oktw*/
                 oktw.say(from, to, '[Title] ' + title);
             }
