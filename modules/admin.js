@@ -20,7 +20,7 @@ module.exports = function (from, to, args) {
                 oktw.say(from, to, 'Deopped ' + args[2]);
                 break;
             case 'ban':
-                oktw.ignore.push(args[2]);
+                oktw.ignore.push('^' + args[2]);
                 oktw.say(from, to, 'Banned ' + args[2]);
                 break;
             case 'unban':
