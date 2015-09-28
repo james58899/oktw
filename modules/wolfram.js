@@ -5,7 +5,6 @@ module.exports = function (from, to, args) {
     wolfram.query(i, function(err, result) {
         if(err) throw err
         /*global oktw*/
-        console.log(result[1].subpods[0].value);
         oktw.say(from, to, result[1].subpods[0].value.slice(0,450));
     })
 };
