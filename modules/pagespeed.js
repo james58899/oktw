@@ -10,4 +10,4 @@ module.exports = function (from, to, args) {
     });
 };
 
-module.exports.info = {name:'pagespeed', example:'.ps www.oktw.tw', command:'ps'};
+module.exports.info = {name:'pagespeed', example:'.ps https://www.oktw.tw/', command:'ps'};
