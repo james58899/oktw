@@ -5,4 +5,4 @@ module.exports = function (from, to, args) {
     }
 };
 
-module.exports.info = {name:'me', example:'.me Hi', command:'me'};
+module.exports.info = {name:'action', example:'.me Hi', command:'me'};
