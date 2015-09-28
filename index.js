@@ -120,7 +120,7 @@ oktw.prototype.listener = function() {
                     var i = self.mm.modules[mod];
                     if (args[0].toLowerCase() === i.info['command']) {
                         if (args.length === 1 && i.info['example'] !== undefined) {
-                            self.say(from, to, 'Example: ' + i.info['example']);
+                            self.say(from, to, i.info['name'] + '\nExample: ' + i.info['example']);
                         }else{
                             i(from, to, args);
                             break;
