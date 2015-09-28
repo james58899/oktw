@@ -18,7 +18,7 @@ module.exports = function (from, to, url) {
     request(options, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             $ = cheerio.load(body);
-            var title =$('title').text();
+            var title =$('title').text().replace(/\s/g, ' ');
             if (title != '') {
                 /*global oktw*/
                 oktw.say(from, to, '[Title] ' + title);
