@@ -7,7 +7,7 @@ module.exports = function (from, to, args) {
         if (!err && response.statusCode == 200) {
             var title = JSON.parse(body).query.search[0].title
             var options = {
-                url:'https://zh.wikipedia.org/w/api.php?format=json&utf8&action=query&prop=extracts&exintro&explaintext&exchars=140&redirects&titles=' + encodeURI(title),
+                url:'https://zh.wikipedia.org/w/api.php?format=json&utf8&action=query&prop=extracts&exintro&explaintext&exchars=130&redirects&titles=' + encodeURI(title),
                 headers: {
                     'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3'
                 },
