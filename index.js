@@ -70,12 +70,10 @@ oktw.prototype.say = function (from, target, message) {
     }else{
         delayA = 3;
     }
-    if (delayA >0) {
-        if (delayB > 0) {
-            this.irc.say(target, message);
-            console.log('%s => %s: %s', this.irc.nick, target, message);
-            delayB--;
-        }
+    if (delayA >0 && delayB > 0) {
+        this.irc.say(target, message);
+        console.log('%s => %s: %s', this.irc.nick, target, message);
+        delayB--;
     }
     delayC = from;
 };
