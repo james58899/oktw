@@ -2,12 +2,12 @@ var request = require('request');
 
 module.exports = function (from, to, args) {
     var arg = args.join(' ').replace('w ', '');
-    var search = 'https://zh.wikipedia.org/w/api.php?format=json&action=query&list=search&srlimit=1&srprop&continue&srsearch=' + arg
+    var search = 'https://zh.wikipedia.org/w/api.php?format=json&action=query&list=search&srlimit=1&srprop&continue&srsearch=' + encodeURI(arg);
     request(search, function(err, response, body) {
-        if (!err && response.statusCode == 200 && JSON.parse(body).query.search[0].title) {
+        if (!err && response.statusCode == 200) {
             var title = JSON.parse(body).query.search[0].title
             var options = {
-                url:'https://zh.wikipedia.org/w/api.php?format=json&utf8&action=query&prop=extracts&exintro&explaintext&exchars=150&redirects&titles=' + title,
+                url:'https://zh.wikipedia.org/w/api.php?format=json&utf8&action=query&prop=extracts&exintro&explaintext&exchars=140&redirects&titles=' + encodeURI(title),
                 headers: {
                     'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3'
                 },
@@ -17,7 +17,7 @@ module.exports = function (from, to, args) {
                 if (!err && response.statusCode == 200) {
                     var data = JSON.parse(body);
                     var firstResult = Object.keys(data.query.pages);
-                    oktw.say(from, to, '[wiki] ' + data.query.pages[firstResult[0]].extract + ' - http://zh.wikipedia.org/wiki/' + title);
+                    oktw.say(from, to, '[wiki] ' + data.query.pages[firstResult[0]].extract + '\nhttp://zh.wikipedia.org/wiki/' + title);
                 }
             })
          }
