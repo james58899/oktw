@@ -5,9 +5,9 @@ module.exports = function (from, to, args) {
     request(url, function(err, response, body) {
         if (!err && response.statusCode == 200) {
             /*global oktw*/
-            oktw.say(from, to, JSON.parse(body).ruleGroups.SPEED.score);
+            oktw.say(from, to, '分數：'JSON.parse(body).ruleGroups.SPEED.score + '/100');
          }
     });
 };
 
-module.exports.info = {name:'pagespeed', example:'.ps https://www.oktw.tw/', command:'ps'};
+module.exports.info = {name:'PageSpeed Insights', example:'.ps https://www.oktw.tw/', command:'ps'};
