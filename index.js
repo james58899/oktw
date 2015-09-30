@@ -56,7 +56,7 @@ oktw.prototype.stop = function() {
     process.exit();
 };
 
-var delayA = 3;
+var delayA = 5;
 var delayB = 5;
 var delayC;
 setInterval(function(){
@@ -68,7 +68,7 @@ oktw.prototype.say = function (from, target, message) {
     if (delayC === from) {
         delayA--;
     }else{
-        delayA = 3;
+        delayA = 5;
     }
     if (delayA >0 && delayB > 0) {
         this.irc.say(target, message);
