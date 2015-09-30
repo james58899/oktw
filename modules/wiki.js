@@ -17,7 +17,7 @@ module.exports = function (from, to, args) {
                 if (!err && response.statusCode == 200) {
                     var data = JSON.parse(body);
                     var firstResult = Object.keys(data.query.pages);
-                    oktw.say(from, to, '[wiki] ' + data.query.pages[firstResult[0]].extract + '\nhttp://zh.wikipedia.org/wiki/' + title);
+                    oktw.say(from, to, '[wiki] ' + data.query.pages[firstResult[0]].extract + '\nhttp://zh.wikipedia.org/wiki/' + title.replace(/\s/g, '_'));
                 }
             })
          }
