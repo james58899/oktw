@@ -5,7 +5,7 @@ module.exports = function (from, to, args) {
     request(url, function(err, response, body) {
         if (!err && response.statusCode == 200) {
             /*global oktw*/
-            oktw.say(from, to, '分數：'JSON.parse(body).ruleGroups.SPEED.score + '/100');
+            oktw.say(from, to, '分數：' + JSON.parse(body).ruleGroups.SPEED.score + '/100');
          }
     });
 };
