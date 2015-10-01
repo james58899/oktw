@@ -153,6 +153,6 @@ oktw.prototype.listener = function() {
 
 global.oktw = new oktw();
 
-process.on('uncaughtException', function (err) {
-    console.log(err.stack);
+process.on('uncaughtException', function (ex) {
+    console.log(ex.stack);
 });

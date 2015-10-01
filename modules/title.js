@@ -1,26 +1,35 @@
 var request = require('request');
 var cheerio = require('cheerio');
+var url = require('url');
+var iconv = require('iconv-lite');
 
-module.exports = function (from, to, url) {
-    if (url.length === 1) {
-        url = url[0];
+module.exports = function (from, to, uri) {
+    if (uri.length === 1) {
+        uri = url.parse(uri[0]);
     }else{
-        url = url[1];
+        uri = url.parse(uri[1]);
     }
     var options = {
-        url: encodeURI(url),
+        url: encodeURI(uri.href),
         headers: {
             'User-Agent': 'chrome32 on win8 Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36',
             'Cookie': 'over18=1',
             'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3'
         },
-        timeout: 1500,
-        gzip: true
+        timeout: 3000,
+        gzip: true,
+        encoding: null
     };
     request(options, function(error, response, body) {
         if (!error && response.statusCode == 200) {
+            try {
+                var encode = response.headers['content-type'].match(/charset=\S+/i).toString().replace('charset=', '');
+            }catch (ex){}
+            if(encode !== undefined && !encode.match('utf-8')) {
+                body = iconv.decode(body, encode);
+            }
             $ = cheerio.load(body);
-            var title =$('title').text().replace(/\s/g, ' ');
+            var title =$('title').text().trim().replace(/\s/g, ' ');
             if (title != '') {
                 /*global oktw*/
                 oktw.say(from, to, '[Title] ' + title);

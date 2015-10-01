@@ -2,39 +2,48 @@ module.exports = function (from, to, args) {
     /*global oktw*/
     oktw.checkAdmin(from, function(admin) {
         if (!admin) {
-            oktw.say(from, to, 'Admin only!');
+            oktw.say(from, to, '管理員指令！');
             return;
         }
         switch(args[1]) {
             case 'op':
                 if(oktw.admin.indexOf(args[2]) < 0){
                     oktw.admin.push(args[2]);
-                        oktw.say(from, to, 'Successfully!');
-                }
-                else {
-                    oktw.say(from, to, 'User ' + args[2] + ' is already an operator.');
+                    oktw.say(from, to, args[2] + ' 設為管理員！');
+                }else{
+                    oktw.say(from, to, args[2] + ' 已經是管理員了');
                 }
                 break;
             case 'deop':
-                oktw.admin.indexOf(args[2]) > -1 && oktw.admin.splice(oktw.admin.indexOf(args[2]), 1);
-                oktw.say(from, to, 'Deopped ' + args[2]);
+                if(oktw.admin.indexOf(args[2]) > -1) {
+                    oktw.admin.splice(oktw.admin.indexOf(args[2]), 1);
+                    oktw.say(from, to, '取消 ' + args[2] + ' 的管理員權限！');
+                }else{
+                    oktw.say(from, to, args[2] + ' 不是管理員');
+                }
                 break;
             case 'ban':
-                oktw.ignore.push('^' + args[2]);
-                oktw.say(from, to, 'Banned ' + args[2]);
+                if(oktw.ignore.indexOf(args[2]) < 0) {
+                    oktw.ignore.push(args[2]);
+                    oktw.say(from, to, '忽略 ' + args[2]);
+                }else{
+                    oktw.say(from, to, args[2] + ' 已在忽略名單中');
+                }
                 break;
             case 'unban':
                 if(oktw.ignore.indexOf(args[2]) > -1){
                     oktw.ignore.splice(oktw.ignore.indexOf(args[2]), 1);
+                    oktw.say(from, to, '取消忽略 ' + args[2]);
+                }else{
+                    oktw.say(from, to, args[2] + ' 沒有被忽略');
                 }
-                oktw.say(from, to, 'Unbanned ' + args[2]);
                 break;
             case 'reload':
                 oktw.reload();
-                oktw.say(from, to, 'Bot reloaded!');
+                oktw.say(from, to, '重新載入完成！');
                 break;
             case 'stop':
-                oktw.say(from, to, 'Stopping!');
+                oktw.say(from, to, '停止中！');
                 oktw.stop();
         }
     });
