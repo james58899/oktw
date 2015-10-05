@@ -64,7 +64,7 @@ setInterval(function(){
         delayB++;
     }
 }, 1000);
-oktw.prototype.say = function (from, target, message) {
+oktw.prototype.say = function(from, target, message) {
     if (delayC === from) {
         delayA--;
     }else{
@@ -91,13 +91,11 @@ oktw.prototype.checkAdmin = function(nick, callback) {
 
 oktw.prototype.checkIgnore = function(nick) {
     var result = true;
-    if (this.ignore !== undefined) {
-        this.ignore.forEach(function(ignore) {
-            if (nick.match(new RegExp(ignore, 'gi'))) {
-                result = false;
-            }
-        });
-    }
+    this.ignore.forEach(function(ignore) {
+        if (nick.match(new RegExp(ignore, 'gi'))) {
+            result = false;
+        }
+    });
     return result;
 };
 
@@ -112,7 +110,13 @@ oktw.prototype.listener = function() {
                 self.say(from, to, 'pong');
             }else if(message === '.help') {
                 self.say(from, to, '可用指令：' + self.mm.commands.toString());
-            }else if (message.match(/^\.[a-z]/i)) {
+            }
+        }
+    });
+
+    this.irc.addListener('message#', function(from, to, message) {
+        if (self.checkIgnore(from)) {
+            if (message.match(/^\.[a-z]/i)) {
                 var args = message.replace(/^\./, '').split(' ');
                 for(var mod in self.mm.modules) {
                     var i = self.mm.modules[mod];
@@ -136,7 +140,8 @@ oktw.prototype.listener = function() {
             }
         }
     });
-    this.irc.addListener('pm', function (from, message) {
+
+    this.irc.addListener('pm', function(from, message) {
         console.log('%s => %s: %s',from ,oktw.ncik ,message);
     });
 
@@ -153,6 +158,6 @@ oktw.prototype.listener = function() {
 
 global.oktw = new oktw();
 
-process.on('uncaughtException', function (ex) {
+process.on('uncaughtException', function(ex) {
     console.log(ex.stack);
 });
