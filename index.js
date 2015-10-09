@@ -13,6 +13,9 @@ http.listen(http.get('port'));
 //Start
 var oktw = function() {
     console.log('Loading bot...');
+    this.delayA = 5;
+    this.delayB = 5;
+    this.delayC;
     this.irc;
     this.say;
     this.config = {};
@@ -56,26 +59,23 @@ oktw.prototype.stop = function() {
     process.exit();
 };
 
-var delayA = 5;
-var delayB = 5;
-var delayC;
 setInterval(function(){
-    if (delayB < 5) {
-        delayB++;
+    if (global.oktw.delayB < 5) {
+        global.oktw.delayB++;
     }
 }, 1000);
 oktw.prototype.say = function(from, target, message) {
-    if (delayC === from) {
-        delayA--;
+    if (this.delayC === from) {
+        this.delayA--;
     }else{
-        delayA = 5;
+        this.delayA = 5;
     }
-    if (delayA >0 && delayB > 0) {
+    if (this.delayA >0 && this.delayB > 0) {
         this.irc.say(target, message);
         console.log('%s => %s: %s', this.irc.nick, target, message);
-        delayB--;
+        this.delayB--;
     }
-    delayC = from;
+    this.delayC = from;
 };
 
 oktw.prototype.checkAdmin = function(nick, callback) {

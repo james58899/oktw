@@ -52,6 +52,10 @@ module.exports = function (from, to, args) {
                     oktw.say(from, to, args[2] + ' 沒有被忽略');
                 }
                 break;
+            case 'resetCD':
+                oktw.delayA = 5;
+                oktw.say(from, to, '已重置防洗系統');
+                break;
             case 'reload':
                 oktw.reload();
                 oktw.say(from, to, '重新載入完成！');
