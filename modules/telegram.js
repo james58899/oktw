@@ -28,6 +28,8 @@ tg.on('message', function (msg) {
 });
 
 module.exports = function(from, to, message) {
-    tg.sendMessage(-35087073, util.format('<%s>: %s', from, message));
+    if(to === '#ysitd') {
+        tg.sendMessage(-35087073, util.format('<%s>: %s', from, message));
+    }
 };
 module.exports.info = {name:'telegram', rawcommand:/.*/};
