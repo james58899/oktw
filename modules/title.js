@@ -2,6 +2,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var url = require('url');
 var iconv = require('iconv-lite');
+var charsetDetector = require("node-icu-charset-detector");
 
 module.exports = function (from, to, uri) {
     if (uri.length === 1) {
@@ -21,13 +22,8 @@ module.exports = function (from, to, uri) {
         encoding: null
     };
     request(options, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            try {
-                var encode = response.headers['content-type'].match(/charset=\S+/i).toString().replace('charset=', '');
-            }catch (ex){}
-            if(encode !== undefined && !encode.match('utf-8')) {
-                body = iconv.decode(body, encode);
-            }
+        if (!error) {
+            body = iconv.decode(body, charsetDetector.detectCharset(body));
             $ = cheerio.load(body);
             var title =$('title').text().trim().replace(/\s/g, ' ');
             if (title != '') {

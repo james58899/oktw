@@ -17,7 +17,7 @@ module.exports = function (from, to, args) {
                     })
                 }else{
                     oktw.say(from, to, args[2] + ' 已經是管理員了');
-                }
+                }                                           
                 break;
             case 'deop':
                 if(oktw.admin.indexOf(args[2]) > -1) {
@@ -67,4 +67,7 @@ module.exports = function (from, to, args) {
     });
 };
 
-module.exports.info = {name:'admin', example:'.admin op/deop/ban/unban/reload/stop', command:'admin'};
+module.exports.info = {name:'admin', example:'.admin op/deop/ban/unban/resetCD/reload/stop', command:'admin'};
+
+
+
