@@ -109,7 +109,7 @@ oktw.prototype.listener = function() {
             if (message === 'ping') {
                 self.say(from, to, 'pong');
             }else if(message === '.help') {
-                self.say(from, to, '可用指令：' + self.mm.commands.toString());
+                self.say(from, to, '可用指令：' + self.mm.commands.join(', '));
             }
         }
     });
@@ -134,7 +134,6 @@ oktw.prototype.listener = function() {
                     var i = self.mm.modules[mod];
                     if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
                         i(from, to, message.match(i.info['rawcommand']));
-                        break;
                     }
                 }
             }

@@ -4,7 +4,7 @@ var url = require('url');
 var iconv = require('iconv-lite');
 var charsetDetector = require("node-icu-charset-detector");
 
-module.exports = function (from, to, uri) {
+module.exports = function(from, to, uri) {
     if (uri.length === 1) {
         uri = url.parse(uri[0]);
     }else{
@@ -34,4 +34,5 @@ module.exports = function (from, to, uri) {
     });
 };
 
-module.exports.info = {name:'title', example:'.title https://www.google.com/', command:'title', rawcommand:/https?:\/\/\S*/i};
+module.exports.info = {name:'title', rawcommand:/https?:\/\/\S*/i};
+

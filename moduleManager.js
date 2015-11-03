@@ -15,7 +15,9 @@ function InitModules() {
 function Loader(filename) {
     var mod = require('./modules/' + filename);
     modules[mod.info['name']] = mod;
-    commands.push(mod.info['command']);
+    if(mod.info['commanda']) {
+        commands.push(mod.info['command']);
+    }
     console.log('Loaded module %s(%s) !', mod.info['name'], filename);
 }
 
