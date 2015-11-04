@@ -8,8 +8,12 @@ imgur.setClientId('32cd79f0cb986fc');
 
 tg.on('message', function (msg) {
     if(msg.text) {
-        /*global oktw*/
-        oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.text));
+        if(msg.text.match(/^\/ping/i)) {
+            tg.sendMessage(-35087073, 'pong');
+        }else{
+            /*global oktw*/
+            oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.text.replace(/\s/g, ' ')));
+        }
     }
     if(msg.photo) {
         var fileId = msg.photo[msg.photo.length-1].file_id;
