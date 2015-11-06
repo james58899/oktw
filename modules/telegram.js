@@ -8,12 +8,15 @@ imgur.setClientId('32cd79f0cb986fc');
 
 tg.on('message', function (msg) {
     if(msg.text) {
-        if(msg.text.match(/^\/ping/i)) {
-            tg.sendMessage(-35087073, 'pong');
+        console.log('%s => Telegram: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
+        var message;
+        if(msg.reply_to_message) {
+            message = util.format('<%s>: @%s %s', msg.from.username, msg.reply_to_message.from.username, msg.text.replace(/\s/g, ' '));
         }else{
-            /*global oktw*/
-            oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.text.replace(/\s/g, ' ')));
+            message = util.format('<%s>: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
         }
+        /*global oktw*/
+        oktw.irc.say('#ysitd', message);
     }
     if(msg.photo) {
         var fileId = msg.photo[msg.photo.length-1].file_id;
