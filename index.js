@@ -5,8 +5,8 @@ var fs = require('fs');
 //Web Servcie Start
 var http = express();
 http.set('port', (process.env.PORT || 5000));
-http.get('*', function (req, res) {
-  res.send('Hello World!');
+http.get('*', function(req, res) {
+    res.send('Hello World!');
 });
 http.listen(http.get('port'));
 
@@ -59,7 +59,7 @@ oktw.prototype.stop = function() {
     process.exit();
 };
 
-setInterval(function(){
+setInterval(function() {
     if (global.oktw.delayB < 5) {
         global.oktw.delayB++;
     }
@@ -67,10 +67,11 @@ setInterval(function(){
 oktw.prototype.say = function(from, target, message) {
     if (this.delayC === from) {
         this.delayA--;
-    }else{
+    }
+    else {
         this.delayA = 5;
     }
-    if (this.delayA >0 && this.delayB > 0) {
+    if (this.delayA > 0 && this.delayB > 0) {
         this.irc.say(target, message);
         console.log('%s => %s: %s', this.irc.nick, target, message);
         this.delayB--;
@@ -83,7 +84,8 @@ oktw.prototype.checkAdmin = function(nick, callback) {
     this.irc.whois(nick, function(data) {
         if (typeof data.account !== "undefined" && self.admin.indexOf(data.account) > -1) {
             callback(true);
-        }else{
+        }
+        else {
             callback(false);
         }
     });
@@ -103,12 +105,13 @@ oktw.prototype.checkIgnore = function(nick) {
 oktw.prototype.listener = function() {
     var self = this;
 
-    this.irc.addListener('message#', function (from, to, message) {
-        console.log('%s => %s: %s',from ,to ,message);
+    this.irc.addListener('message#', function(from, to, message) {
+        console.log('%s => %s: %s', from, to, message);
         if (self.checkIgnore(from)) {
             if (message === 'ping') {
                 self.say(from, to, 'pong');
-            }else if(message === '.help') {
+            }
+            else if (message === '.help') {
                 self.say(from, to, '可用指令：' + self.mm.commands.join(', '));
             }
         }
@@ -118,19 +121,21 @@ oktw.prototype.listener = function() {
         if (self.checkIgnore(from)) {
             if (message.match(/^\.[a-z]/i)) {
                 var args = message.replace(/^\./, '').split(' ');
-                for(var mod in self.mm.modules) {
+                for (var mod in self.mm.modules) {
                     var i = self.mm.modules[mod];
                     if (args[0].toLowerCase() === i.info['command']) {
                         if (args.length === 1 && i.info['example'] !== undefined) {
                             self.say(from, to, i.info['name'] + '\nExample: ' + i.info['example']);
-                        }else{
+                        }
+                        else {
                             i(from, to, args);
                             break;
                         }
                     }
                 }
-            }else{
-                for(var mod in self.mm.modules) {
+            }
+            else {
+                for (var mod in self.mm.modules) {
                     var i = self.mm.modules[mod];
                     if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
                         i(from, to, message.match(i.info['rawcommand']));
@@ -141,7 +146,7 @@ oktw.prototype.listener = function() {
     });
 
     this.irc.addListener('pm', function(from, message) {
-        console.log('%s => %s: %s',from ,oktw.ncik ,message);
+        console.log('%s => %s: %s', from, oktw.ncik, message);
     });
 
     //autojoin
