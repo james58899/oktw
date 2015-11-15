@@ -1,14 +1,5 @@
-var express = require('express');
 var irc = require('irc');
 var fs = require('fs');
-
-//Web Servcie Start
-var http = express();
-http.set('port', (process.env.PORT || 5000));
-http.get('*', function(req, res) {
-    res.send('Hello World!');
-});
-http.listen(http.get('port'));
 
 //Start
 var oktw = function() {
