@@ -7,11 +7,12 @@ var charsetDetector = require("node-icu-charset-detector");
 module.exports = function(from, to, uri) {
     if (uri.length === 1) {
         uri = url.parse(uri[0]);
-    }else{
+    }
+    else {
         uri = url.parse(uri[1]);
     }
     var options = {
-        url: encodeURI(uri.href),
+        url: uri.href,
         headers: {
             'User-Agent': 'request',
             'Cookie': 'over18=1',
@@ -25,7 +26,7 @@ module.exports = function(from, to, uri) {
         if (!error) {
             body = iconv.decode(body, charsetDetector.detectCharset(body));
             $ = cheerio.load(body);
-            var title =$('title').text().trim().replace(/\s/g, ' ');
+            var title = $('title').text().trim().replace(/\s/g, ' ');
             if (title != '') {
                 /*global oktw*/
                 oktw.say(from, to, '[Title] ' + title);
@@ -34,5 +35,7 @@ module.exports = function(from, to, uri) {
     });
 };
 
-module.exports.info = {name:'title', rawcommand:/https?:\/\/\S*/i};
-
+module.exports.info = {
+    name: 'title',
+    rawcommand: /https?:\/\/\S*/i
+};
