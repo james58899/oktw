@@ -34,6 +34,9 @@ tg.on('message', function(msg) {
                 });
             });
         }
+        if (msg.caption) {
+            oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.caption));
+        }
     }
 });
 
