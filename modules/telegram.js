@@ -10,7 +10,7 @@ var tg = new TelegramBot(token, {
         interval: 500
     }
 });
-imgur.setClientId('32cd79f0cb986fc');
+imgur.setClientId('ddd72244e8dbdca');
 
 tg.on('message', function(msg) {
     if (msg.chat.id === tgChatID) {
@@ -35,7 +35,8 @@ tg.on('message', function(msg) {
             });
         }
         if (msg.caption) {
-            oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.caption));
+            console.log('%s => Telegram: %s', msg.from.username, msg.caption.replace(/\s/g, ' '));
+            oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, msg.caption.replace(/\s/g, ' ')));
         }
     }
 });
