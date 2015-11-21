@@ -31,6 +31,8 @@ tg.on('message', function(msg) {
             tg.getFileLink(fileId).then(function(url) {
                 imgur.uploadUrl(url).then(function(res) {
                     oktw.irc.say('#ysitd', util.format('<%s>: %s', msg.from.username, res.data.link));
+                }).catch(function (err) {
+                    console.error(err.message);
                 });
             });
         }
