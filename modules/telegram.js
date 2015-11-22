@@ -10,7 +10,7 @@ var tg = new TelegramBot(token, {
         interval: 500
     }
 });
-imgur.setClientId('ddd72244e8dbdca');
+imgur.setClientId('41ad90f344bdf2f');
 
 tg.on('message', function(msg) {
     if (msg.chat.id === tgChatID) {
