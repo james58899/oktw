@@ -12,13 +12,13 @@ module.exports = function(from, to, uri) {
         uri = url.parse(uri[1]);
     }
     var options = {
-        url: uri.href,
+        url: encodeURI(decodeURIComponent(uri.href)),
         headers: {
             'User-Agent': 'request',
             'Cookie': 'over18=1',
             'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3'
         },
-        timeout: 3000,
+        timeout: 000,
         gzip: true,
         encoding: null
     };
