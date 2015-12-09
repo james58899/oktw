@@ -16,9 +16,14 @@ tg.on('message', function(msg) {
     if (msg.chat.id === tgChatID) {
         if (msg.text) {
             console.log('%s => Telegram: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
-            var message;
+            var message = msg.text.replace(/\s/g, ' ');
             if (msg.reply_to_message) {
-                message = util.format('<%s>: @%s %s', msg.from.username, msg.reply_to_message.from.username, msg.text.replace(/\s/g, ' '));
+                if(msg.reply_to_message.from.username === 'oktw_bot') {
+                    var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
+                    message = util.format('<%s>: %s, %s', msg.from.username, ReplyUsername, message);
+                }else{
+                    message = util.format('<%s>: @%s %s', msg.from.username, msg.reply_to_message.from.username, message);
+                }
             }
             else {
                 message = util.format('<%s>: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
