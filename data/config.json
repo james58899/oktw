@@ -9,5 +9,6 @@
     "port": 7000,
     "secure": true,
     "username": "oktw",
-    "realname": "oktw - https://www.oktw.tw/"
+    "realname": "oktw - https://www.oktw.tw/",
+    "tgKey": "165999018:AAGmDVig2IDY7lmiwUMnW2VgR53PUNEGwVU"
 }

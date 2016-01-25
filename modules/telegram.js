@@ -3,7 +3,7 @@ var util = require('util');
 var imgur = require('imgur');
 
 var tgChatID = -35087073;
-var token = '165999018:AAGmDVig2IDY7lmiwUMnW2VgR53PUNEGwVU';
+var token = oktw.config.tgKey;
 var tg = new TelegramBot(token, {
     polling: {
         timeout: 5,
@@ -50,7 +50,7 @@ tg.on('message', function(msg) {
 
 module.exports = function(from, to, message) {
     if (to === '#ysitd') {
-        tg.sendMessage(tgChatID, util.format('<%s>: %s', from, message));
+        tg.sendMessage(tgChatID, util.format('<%s>: %s', from, message.toString().replace(/((?:\u0003\d\d?,\d\d?|\u0003\d\d?|\u0002|\u001d|\u000f|\u0016|\u001f))/g, '')));
     }
 };
 module.exports.info = {
