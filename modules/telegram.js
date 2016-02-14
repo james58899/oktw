@@ -63,8 +63,10 @@ module.exports = function(from, to, message) {
     }
 };
 
-oktw.irc.on('action', function(from, to, text, message) {
-    tg.sendMessage(tgChatID, util.format('<%s>: /me %s', from, text.toString().replace(/((?:\u0003\d\d?,\d\d?|\u0003\d\d?|\u0002|\u001d|\u000f|\u0016|\u001f))/g, '')));
+oktw.irc.on('action', function(from, to, text) {
+    if (to === '#ysitd') {
+        tg.sendMessage(tgChatID, util.format('<%s>: /me %s', from, text.toString().replace(/((?:\u0003\d\d?,\d\d?|\u0003\d\d?|\u0002|\u001d|\u000f|\u0016|\u001f))/g, '')));
+    }
 });
 
 module.exports.info = {
