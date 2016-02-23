@@ -2,7 +2,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var util = require('util');
 var imgur = require('imgur');
 
-var tgChatID = -35087073;
+var tgChatID = -1001033293696;
 var token = oktw.config.tgKey;
 var tg = new TelegramBot(token, {
     polling: {
