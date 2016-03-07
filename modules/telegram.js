@@ -1,6 +1,7 @@
 var TelegramBot = require('node-telegram-bot-api');
 var util = require('util');
 var imgur = require('imgur');
+var Pastee = require('pastee');
 
 var tgChatID = oktw.config.telegram.chatId;
 var token = oktw.config.telegram.key;
@@ -8,56 +9,69 @@ var ircChannel = oktw.config.telegram.channel;
 var username;
 imgur.setClientId('41ad90f344bdf2f');
 
+var paste = new Pastee();
 var tg = new TelegramBot(token, {
     polling: {
         interval: 100
     }
 });
 
-tg.getMe().then(function (me) {
+tg.getMe().then(function(me) {
     username = me.username;
 });
 
 tg.on('message', function(msg) {
     if (msg.chat.id === tgChatID) {
-        if (msg.text) {
-            console.log('%s => Telegram: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
-            var message = msg.text.replace(/\s/g, ' ');
+        var sendToIrc = function(message) {
             if (msg.reply_to_message) {
-                if(msg.reply_to_message.from.username === username) {
+                if (msg.reply_to_message.from.username === username) {
                     var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
+                    console.log('%s => Telegram: %s, %s', msg.from.username, ReplyUsername, message);
                     message = util.format('<%s>: %s, %s', msg.from.username, ReplyUsername, message);
-                }else{
+                }
+                else {
+                    console.log('%s => Telegram: @%s, %s', msg.from.username, msg.reply_to_message.from.username, message);
                     message = util.format('<%s>: @%s %s', msg.from.username, msg.reply_to_message.from.username, message);
                 }
             }
             else {
-                message = util.format('<%s>: %s', msg.from.username, msg.text.replace(/\s/g, ' '));
+                console.log('%s => Telegram: %s', msg.from.username, message);
+                message = util.format('<%s>: %s', msg.from.username, message);
             }
             /*global oktw*/
             oktw.irc.say(ircChannel, message);
+        };
+        if (msg.text) {
+            if (Buffer.byteLength(msg.text, 'utf8') > 300) {
+                paste.paste(msg.text, function(err, res) {
+                    sendToIrc(res.raw);
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+            else {
+                sendToIrc(msg.text.replace(/\s/g, ' '));
+            }
         }
         if (msg.photo) {
             var fileId = msg.photo[msg.photo.length - 1].file_id;
             tg.getFileLink(fileId).then(function(url) {
                 imgur.uploadUrl(url).then(function(res) {
-                    oktw.irc.say(ircChannel, util.format('<%s>: %s', msg.from.username, res.data.link));
-                    console.log('%s => Telegram: %s', msg.from.username, res.data.link);
-                }).catch(function (err) {
+                    sendToIrc(res.data.link);
+                }).catch(function(err) {
                     console.error(err.message);
                 });
             });
         }
         if (msg.caption) {
-            console.log('%s => Telegram: %s', msg.from.username,msg.chat.id , msg.caption.replace(/\s/g, ' '));
-            oktw.irc.say(ircChannel, util.format('<%s>: %s', msg.from.username, msg.caption.replace(/\s/g, ' ')));
+            sendToIrc(msg.caption);
         }
         if (msg.sticker) {
             tg.getFileLink(msg.sticker.file_id).then(function(url) {
                 imgur.uploadUrl(url).then(function(res) {
-                    oktw.irc.say(ircChannel, util.format('<%s>: %s', msg.from.username, res.data.link));
-                    console.log('%s => Telegram: %s', msg.from.username, res.data.link);
-                }).catch(function (err) {
+                    sendToIrc(res.data.link);
+                }).catch(function(err) {
                     console.error(err.message);
                 });
             });
