@@ -10,5 +10,9 @@
     "secure": true,
     "username": "oktw",
     "realname": "oktw - https://www.oktw.tw/",
-    "tgKey": "165999018:AAGmDVig2IDY7lmiwUMnW2VgR53PUNEGwVU"
+    "telegram": {
+        "key": "",
+        "chatId": -1001033293696,
+        "channel": ""
+    }
 }
