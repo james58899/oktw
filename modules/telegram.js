@@ -65,7 +65,7 @@ tg.on('message', function(msg) {
             });
         }
         if (msg.caption) {
-            sendToIrc(msg.caption);
+            sendToIrc(msg.caption.replace(/\s/g, ' '));
         }
         if (msg.sticker) {
             tg.getFileLink(msg.sticker.file_id).then(function(url) {
