@@ -1,10 +1,8 @@
 {
     "nickname": "oktw",
-    "host": "kornbluth.freenode.net",
+    "host": "chat.freenode.net",
     "channels": [
-        "#oktw",
-        "#ysitd",
-        "#koru1130"
+        "#ysitd"
     ],
     "port": 7000,
     "secure": true,
