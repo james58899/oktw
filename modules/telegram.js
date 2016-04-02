@@ -25,26 +25,25 @@ tg.on('message', function(msg) {
         var sendToIrc = function(message) {
             if (msg.reply_to_message) {
                 if (msg.reply_to_message.text) {
-                    var replyMessage = msg.reply_to_message.text.replace(/\s/g, ' ');
                     if (msg.reply_to_message.from.username === username) {
-                        var ReplyUsername = replyMessage.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
+                        var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
                         var ShortMessage;
-                        if (replyMessage.replace(/^<\S+>: /i, '').length > 5) {
-                            ShortMessage = replyMessage.replace(/^<\S+>: /i, '').slice(0, 4) + '...';
+                        if (msg.reply_to_message.text.replace(/^<\S+>: /i, '').length > 5) {
+                            ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '').slice(0, 4) + '...';
                         }
                         else {
-                            ShortMessage = replyMessage.replace(/^<\S+>: /i, '');
+                            ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '');
                         }
                         console.log('%s => Telegram: (%s: %s) %s', msg.from.username, ReplyUsername, ShortMessage, message);
                         message = util.format('<%s>: (%s: %s) %s', msg.from.username, ReplyUsername, ShortMessage, message);
                     }
                     else {
                         var ShortMessage;
-                        if (replyMessage.length > 5) {
-                            ShortMessage = replyMessage.slice(0, 4) + '...';
+                        if (msg.reply_to_message.text.length > 5) {
+                            ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ').slice(0, 4) + '...';
                         }
                         else {
-                            ShortMessage = replyMessage;
+                            ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ');
                         }
                         console.log('%s => Telegram: (@%s: %s) %s', msg.from.username, msg.reply_to_message.from.username, ShortMessage, message);
                         message = util.format('<%s>: (@%s: %s) %s', msg.from.username, msg.reply_to_message.from.username, ShortMessage, message);
@@ -52,7 +51,7 @@ tg.on('message', function(msg) {
                 }
                 else {
                     if (msg.reply_to_message.from.username === username) {
-                        var ReplyUsername = replyMessage.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
+                        var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
                         console.log('%s => Telegram: (reply %s) %s', msg.from.username, ReplyUsername, message);
                         message = util.format('<%s>: (reply %s) %s', msg.from.username, ReplyUsername, message);
                     }
