@@ -40,7 +40,7 @@ tg.on('message', function(msg) {
                     else {
                         var ShortMessage;
                         if (msg.reply_to_message.text.length > 5) {
-                            ShortMessage = msg.reply_to_message.text.slice(0, 4);
+                            ShortMessage = msg.reply_to_message.text.slice(0, 4) + '...';
                         }
                         else {
                             ShortMessage = msg.reply_to_message.text;
