@@ -34,7 +34,7 @@ tg.on('message', function(msg) {
                         else {
                             ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '');
                         }
-                        console.log('%s => Telegram: (%s: %s) %s', msg.from.username, ReplyUsername, ShortMessage, message);
+                        console.log('%s => %s: (%s: %s) %s', msg.from.username, msg.chat.id, ReplyUsername, ShortMessage, message);
                         message = util.format('<%s>: (%s: %s) %s', msg.from.username, ReplyUsername, ShortMessage, message);
                     }
                     else {
@@ -45,24 +45,24 @@ tg.on('message', function(msg) {
                         else {
                             ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ');
                         }
-                        console.log('%s => Telegram: (@%s: %s) %s', msg.from.username, msg.reply_to_message.from.username, ShortMessage, message);
+                        console.log('%s => %s: (@%s: %s) %s', msg.from.username, msg.chat.id, msg.reply_to_message.from.username, ShortMessage, message);
                         message = util.format('<%s>: (@%s: %s) %s', msg.from.username, msg.reply_to_message.from.username, ShortMessage, message);
                     }
                 }
                 else {
                     if (msg.reply_to_message.from.username === username) {
                         var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
-                        console.log('%s => Telegram: (reply %s) %s', msg.from.username, ReplyUsername, message);
+                        console.log('%s => %s: (reply %s) %s', msg.from.username, msg.chat.id, ReplyUsername, message);
                         message = util.format('<%s>: (reply %s) %s', msg.from.username, ReplyUsername, message);
                     }
                     else {
-                        console.log('%s => Telegram: (reply @%s) %s', msg.from.username, msg.reply_to_message.from.username, message);
+                        console.log('%s => %s: (reply @%s) %s', msg.from.username, msg.chat.id, msg.reply_to_message.from.username, message);
                         message = util.format('<%s>: (reply @%s) %s', msg.from.username, msg.reply_to_message.from.username, message);
                     }
                 }
             }
             else {
-                console.log('%s => Telegram: %s', msg.from.username, message);
+                console.log('%s => %s: %s', msg.from.username, msg.chat.id, message);
                 message = util.format('<%s>: %s', msg.from.username, message);
             }
             /*global oktw*/
@@ -103,6 +103,8 @@ tg.on('message', function(msg) {
                 });
             });
         }
+    }else{
+        console.log('(chat_id wrong) %s => %s: %s', msg.from.username, msg.chat.id, msg.text);
     }
 });
 
