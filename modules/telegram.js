@@ -29,7 +29,7 @@ tg.on('message', function(msg) {
                         var ReplyUsername = msg.reply_to_message.text.match(/<\S+>/i)[0].match(/[^<>]+/i)[0];
                         var ShortMessage;
                         if (msg.reply_to_message.text.replace(/^<\S+>: /i, '').length > 5) {
-                            ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '').slice(0, 4) + '...';
+                            ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '').substr(0, 5) + '...';
                         }
                         else {
                             ShortMessage = msg.reply_to_message.text.replace(/^<\S+>: /i, '');
@@ -40,7 +40,7 @@ tg.on('message', function(msg) {
                     else {
                         var ShortMessage;
                         if (msg.reply_to_message.text.length > 5) {
-                            ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ').slice(0, 4) + '...';
+                            ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ').substr(0, 5) + '...';
                         }
                         else {
                             ShortMessage = msg.reply_to_message.text.replace(/\s/g, ' ');
