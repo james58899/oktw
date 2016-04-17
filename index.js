@@ -125,12 +125,10 @@ oktw.prototype.listener = function() {
                     }
                 }
             }
-            else {
-                for (var mod in self.mm.modules) {
-                    var i = self.mm.modules[mod];
-                    if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
-                        i(from, to, message.match(i.info['rawcommand']));
-                    }
+            for (var mod in self.mm.modules) {
+                var i = self.mm.modules[mod];
+                if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
+                    i(from, to, message.match(i.info['rawcommand']));
                 }
             }
         }
