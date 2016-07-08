@@ -1,5 +1,5 @@
-var irc = require('irc');
-var fs = require('fs');
+const irc = require('irc');
+const fs = require('fs');
 
 //Start
 var oktw = function() {
@@ -12,19 +12,33 @@ var oktw = function() {
     this.config = {};
     this.admin = [];
     this.ignore = [];
+    this.commands = [];
+    this.modules = [];
 
-    this.mm.InitModules();
     this.loadConfig();
     this.start();
 };
-
-oktw.prototype.mm = require('./moduleManager');
 
 oktw.prototype.loadConfig = function() {
     this.config = JSON.parse(fs.readFileSync('./data/config.json', 'utf8'));
     this.admin = JSON.parse(fs.readFileSync('./data/admin.json', 'utf8'));
     this.ignore = JSON.parse(fs.readFileSync('./data/ignore.json', 'utf8'));
     console.log('Loaded Config!');
+};
+
+oktw.prototype.InitModules = function() {
+    console.log('Loading modules...');
+    fs.readdir('modules', function(err, files) {
+        if (err) throw err;
+        for (var i = 0; i < files.length; i++) {
+            var mod = require('./modules/' + files[i]);
+            this.modules[mod.info['name']] = mod;
+            if (mod.info['command']) {
+                this.commands.push(mod.info['command']);
+            }
+            console.log('Loaded module %s(%s) !', mod.info['name'], files[i]);
+        }
+    }.bind(this));
 };
 
 oktw.prototype.start = function() {
@@ -36,16 +50,11 @@ oktw.prototype.start = function() {
         secure: this.config.secure,
     });
     console.log('Connecting to IRC...');
+    this.InitModules();
     this.listener();
 };
 
-oktw.prototype.reload = function() {
-    this.mm.Unload();
-    this.mm.InitModules();
-};
-
 oktw.prototype.stop = function() {
-    this.mm.Unload();
     this.irc.disconnect('Bot Stoping!');
     process.exit();
 };
@@ -96,24 +105,24 @@ oktw.prototype.checkIgnore = function(nick) {
 oktw.prototype.listener = function() {
     var self = this;
 
-    this.irc.addListener('message#', function(from, to, message) {
+    self.irc.addListener('message#', function(from, to, message) {
         console.log('%s => %s: %s', from, to, message);
         if (self.checkIgnore(from)) {
             if (message === 'ping') {
                 self.say(from, to, 'pong');
             }
             else if (message === '.help') {
-                self.say(from, to, '可用指令：' + self.mm.commands.join(', '));
+                self.say(from, to, '可用指令：' + self.commands.join(', '));
             }
         }
     });
 
-    this.irc.addListener('message#', function(from, to, message) {
+    self.irc.addListener('message#', function(from, to, message) {
         if (self.checkIgnore(from)) {
             if (message.match(/^\.[a-z]/i)) {
                 var args = message.replace(/^\./, '').split(' ');
-                for (var mod in self.mm.modules) {
-                    var i = self.mm.modules[mod];
+                for (var mod in self.modules) {
+                    var i = self.modules[mod];
                     if (args[0].toLowerCase() === i.info['command']) {
                         if (args.length === 1 && i.info['example'] !== undefined) {
                             self.say(from, to, i.info['name'] + '\nExample: ' + i.info['example']);
@@ -125,8 +134,8 @@ oktw.prototype.listener = function() {
                     }
                 }
             }
-            for (var mod in self.mm.modules) {
-                var i = self.mm.modules[mod];
+            for (var mod in self.modules) {
+                var i = self.modules[mod];
                 if (i.info['rawcommand'] !== undefined && message.match(i.info['rawcommand'])) {
                     i(from, to, message.match(i.info['rawcommand']));
                 }
@@ -134,17 +143,17 @@ oktw.prototype.listener = function() {
         }
     });
 
-    this.irc.addListener('pm', function(from, message) {
+    self.irc.addListener('pm', function(from, message) {
         console.log('%s => %s: %s', from, oktw.ncik, message);
     });
 
     //autojoin
-    this.irc.addListener('invite', function(channel, from, message) {
+    self.irc.addListener('invite', function(channel, from, message) {
         self.irc.join(channel);
         console.log('Bot was invited to join %s', channel);
     });
 
-    this.irc.addListener('registered', function() {
+    self.irc.addListener('registered', function() {
         console.log('Bot connected!\n');
     });
 };
