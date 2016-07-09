@@ -12,7 +12,8 @@ imgur.setClientId('41ad90f344bdf2f');
 var paste = new Pastee();
 var tg = new TelegramBot(token, {
     polling: {
-        interval: 100
+        timeout: 60,
+        interval: 0
     }
 });
 
